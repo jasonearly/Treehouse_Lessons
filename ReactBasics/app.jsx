@@ -1,20 +1,22 @@
+'use strict';
+
 var PLAYERS = [
   {
-    name: "Player 1",
-    score: 0,
+    name: 'Player 1',
+    score: 10,
     id: 1,
   },
   {
-    name: "Player 2",
-    score: 0,
+    name: 'Player 2',
+    score: 20,
     id: 2,
   },
   {
-    name: "Player 3",
-    score: 0,
+    name: 'Player 3',
+    score: 30,
     id: 3,
   },
-]
+];
 
 
 function Header(props){
@@ -33,7 +35,8 @@ function Player(props) {
   return(
   <div className="player">
     <div className="player-name">{props.name}</div>
-          <div className = "player-score"><Counter score={props.score} /></div>
+          <div className = "player-score">
+          <Counter intialScore={props.score}/></div>
     </div>
   );
 }
@@ -43,19 +46,43 @@ Player.propTypes = {
   score: React.PropTypes.number.isRequired,
 };
 
-function Counter (props){
-  return (
-   <div className="counter">
-              <button className="counter-action decrement"> - </button>
-               <div className ="counter-score">{props.score}</div>
-              <button className="counter-action increment"> + </button>
-   </div>
-  );
-}
 
-Counter.propTypes = {
-  score: React.PropTypes.number.isRequired,
-};
+var Counter = React.createClass({
+
+  propTypes: {
+    intialScore: React.PropTypes.number.isRequired,
+  },
+
+  getInitialState: function(){
+    return {
+      score: this.props.intialScore,
+    };
+  },
+
+  incrementScore: function(e){
+    this.setState({
+      score: (this.state.score + 1),
+    });
+  },
+
+    decrementScore: function(e){
+      this.setState({
+        score: (this.state.score - 1),
+      });
+
+  },
+
+  render: function(){
+    return (
+      <div className="counter">
+      <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
+      <div className ="counter-score">{this.state.score}</div>
+      <button className="counter-action increment" onClick={this.incrementScore}> + </button>
+      </div>
+    );
+  }
+});
+
 
 function Application(props) {
   return (
